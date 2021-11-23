@@ -1,24 +1,17 @@
-import logo from './logo.svg';
-import './App.css';
+import { Grid } from './components/grid'
+import { Game } from './scripts/game'
+import { Character } from './scripts/character'
 
-function App() {
+const game = new Game()
+game.setGrid(10, 10)
+
+window.game = game
+window.Character = Character
+
+const App = () => {
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Grid game={game} />
   );
 }
 
