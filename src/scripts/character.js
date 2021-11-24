@@ -1,3 +1,7 @@
+import { isCharacter } from "./utils"
+
+const directions = ['left', 'up', 'right', 'down']
+
 export class Character {
     constructor(name, x, y, color = 'red') {
         this.name = name
@@ -18,31 +22,67 @@ export class Character {
         }
     }
 
+    getAdjacentTiles(game) {
+        return game.getCellsAround(this.name)
+    }
+
+    getControlZoneTiles(game) {
+        const cardinals = game.getCellsAroundDirs(this.name)
+        switch(this.direction) {
+            case 'up': 
+                return [cardinals.NW, cardinals.N, cardinals.NE]
+            case 'left':
+                return [cardinals.NW, cardinals.W, cardinals.SW]
+            case 'right':
+                return [cardinals.NE, cardinals.E, cardinals.SE]
+            default:
+                return [cardinals.SW, cardinals.S, cardinals.SE]
+        }
+    }
+
+    turn(direction, game){
+        const curIdx = directions.indexOf(this.direction)
+        let nextIdx = 0
+        if (direction === 'left') {
+            nextIdx = curIdx + 1 === directions.length ? 0 : curIdx + 1
+        } else {
+            nextIdx = curIdx - 1 < 0 ? directions.length -1 : curIdx - 1
+        }
+        game.turnCharacter(this.name, directions[nextIdx])
+    }
+
     move(cardinal, game) {
+        const moveTo = (x, y) => {
+            if ( isCharacter(game.gridAt(x, y)) ) {
+                // fail to move if there's already a character there
+                return
+            }
+            game.moveCharacter(this.name, x, y)
+        }
         switch(cardinal) {
             case 'NW':
-                game.moveCharacter(this.name, this.x - 1, this.y - 1)
+                moveTo(this.x - 1, this.y - 1)
             break
             case 'N':
-                game.moveCharacter(this.name, this.x, this.y - 1)
+                moveTo(this.x, this.y - 1)
             break
             case 'NE':
-                game.moveCharacter(this.name, this.x + 1, this.y - 1)
+                moveTo(this.x + 1, this.y - 1)
             break
             case 'E': 
-                game.moveCharacter(this.name, this.x + 1, this.y)
+                moveTo(this.x + 1, this.y)
             break
             case 'W': 
-                game.moveCharacter(this.name, this.x - 1, this.y)
+                moveTo(this.x - 1, this.y)
             break
             case 'SW':
-                game.moveCharacter(this.name, this.x - 1, this.y + 1)
+                moveTo(this.x - 1, this.y + 1)
             break
             case 'S':
-                game.moveCharacter(this.name, this.x, this.y + 1)
+                moveTo(this.x, this.y + 1)
             break
             case 'SE':
-                game.moveCharacter(this.name, this.x + 1, this.y + 1)
+                moveTo(this.x + 1, this.y + 1)
             break
             default:
             break

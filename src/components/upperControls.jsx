@@ -19,14 +19,12 @@ const EmptyCell = styled.div`
 
 `
 
-
-
-
 export const UpperControls = (props) => {
     const {game} = props
     const {selectedChar} = game
-
-    const move = (cardinal) => () => game.characters[selectedChar].move(cardinal, game)
+    const curChar = game.characters[selectedChar]
+    const move = (cardinal) => () => curChar && curChar.move(cardinal, game)
+    const turn = (direction) => () => curChar && curChar.turn(direction, game)
 
     return (
         <ControlGrid>
@@ -44,7 +42,7 @@ export const UpperControls = (props) => {
             <EmptyCell />
 
             <ControlCell>
-                <button>&lt;turn</button>
+                <button onClick={turn('left')}>&lt;turn</button>
             </ControlCell>
             <ControlCell>
                 <button onClick={move('W')}>W</button>
@@ -54,7 +52,7 @@ export const UpperControls = (props) => {
                 <button onClick={move('E')}>E</button>
             </ControlCell>
             <ControlCell>
-                <button>turn&gt;</button>
+                <button onClick={turn('right')}>turn&gt;</button>
             </ControlCell>
 
             <EmptyCell />

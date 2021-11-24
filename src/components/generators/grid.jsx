@@ -7,6 +7,7 @@ export default (g, upKey) => {
             grid.push(
                 <GridEntity 
                     key={`cell-${cellX}-${cellY}-${upKey}`} 
+                    id={`cell-${cellX}-${cellY}`}
                     posX={cellX} 
                     posY={cellY}
                 />

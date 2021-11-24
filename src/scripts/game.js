@@ -1,3 +1,7 @@
+import { isCharacter } from "./utils"
+
+const squaresToDirectionsMap = ['NW', 'N', 'NE', 'W', 'E', 'SW', 'S', 'SE']
+
 export class Game {
     constructor() {
         this.grid = []
@@ -40,6 +44,11 @@ export class Game {
         this.setGridAt(this.characters[name], newX, newY)
         this.characters[name].x = newX
         this.characters[name].y = newY
+        this.refresh()
+    }
+
+    turnCharacter(name, direction) {
+        this.characters[name].direction = direction
         this.refresh()
     }
 
@@ -93,8 +102,15 @@ export class Game {
         return [sq0, sq1, sq2, sq3, sq4, sq5, sq6, sq7]
     }
 
+    getCellsAroundDirs(name) {
+        const cells = this.getCellsAround(name)
+        const dirs = {}
+        cells.forEach((cell, idx) => dirs[squaresToDirectionsMap[idx]] = cell)
+        return dirs
+    }
+
     getCharactersAround(name) {
-        this.getCellsAround(name).filter(cell => cell !== -1 && cell.name)
+        this.getCellsAround(name).filter(isCharacter)
     }
 
     getGridDimensions() {

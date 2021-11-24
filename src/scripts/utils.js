@@ -10,3 +10,7 @@ export const numToAlpha = (num) => {
 export const convertX = (num) => num + 1
 
 export const convertY = numToAlpha
+
+export const isEmptyTile = (tile) => tile === null
+
+export const isCharacter = (tile) => ( tile && tile !== -1 && tile.name )
