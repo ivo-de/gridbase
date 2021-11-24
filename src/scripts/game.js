@@ -34,9 +34,10 @@ export class Game {
     }
 
     moveCharacter(name, newX, newY) {
+        if (this.gridAt(newX, newY) === -1) return 
         const {x, y} = this.characters[name]
         this.grid[x][y] = null
-        this.grid[newX][newY] = this.characters[name]
+        this.setGridAt(this.characters[name], newX, newY)
         this.characters[name].x = newX
         this.characters[name].y = newY
         this.refresh()
@@ -44,15 +45,15 @@ export class Game {
 
     gridAt(x, y) {
         if (this.grid[x]) {
-            if (this.grid[x][y]) {
+            if (this.grid[x][y] || this.grid[x][y] === null) {
                 return this.grid[x][y]
             }
         }
-        return undefined
+        return -1
     }
 
     setGridAt(entity, x, y) {
-        if (!this.gridAt(x, y)) return undefined
+        if (this.gridAt(x, y) === -1) return undefined
         this.grid[x][y] = entity
         return entity
     }
@@ -71,11 +72,10 @@ export class Game {
             this.selectedChar = name
             this.characters[name].selected = true
         }
-        console.log('toggled select char')
         this.refresh()
     }
 
-    getCharactersAround(name) {
+    getCellsAround(name) {
         // the long, obvious way to do this
         // squares are named like this (where c is the tested character)
         // 0, 1, 2
@@ -90,7 +90,11 @@ export class Game {
         const sq5 = this.gridAt(x - 1, y + 1)
         const sq6 = this.gridAt(x, y + 1)
         const sq7 = this.gridAt(x + 1, y + 1)
-        return [sq0, sq1, sq2, sq3, sq4, sq5, sq6, sq7].filter(cell => !!cell)
+        return [sq0, sq1, sq2, sq3, sq4, sq5, sq6, sq7]
+    }
+
+    getCharactersAround(name) {
+        this.getCellsAround(name).filter(cell => cell !== -1 && cell.name)
     }
 
     getGridDimensions() {

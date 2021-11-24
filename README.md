@@ -1,4 +1,8 @@
-# Getting Started with Create React App
+# Gridbase - working name for action board game
+
+This is the first prototype of Gridbase. It can be run like a standard React project.
+
+## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

@@ -1,5 +1,6 @@
 import { Entity } from '../common/entity'
 import styled from 'styled-components'
+import { convertX, convertY } from '../../scripts/utils'
 
 const LetterContainer = styled.div`
     position: relative;
@@ -8,15 +9,6 @@ const LetterContainer = styled.div`
     text-align: center;
     margin-top: 39%;
 `
-
-const numToAlpha = (num) => {
-    let letters = ''
-    while (num >= 0) {
-        letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[num % 26] + letters
-        num = Math.floor(num / 26) - 1
-    }
-    return letters
-}
 
 export default (g, upKey) => {
     const labels = []
@@ -28,7 +20,7 @@ export default (g, upKey) => {
                 posX={cellX} 
                 posY={-1}
             >
-                <LetterContainer>{cellX}</LetterContainer>
+                <LetterContainer>{convertX(cellX)}</LetterContainer>
             </Entity>
         )
     }
@@ -39,7 +31,7 @@ export default (g, upKey) => {
                 posX={-1} 
                 posY={cellY}
             >
-                <LetterContainer>{numToAlpha(cellY)}</LetterContainer>
+                <LetterContainer>{convertY(cellY)}</LetterContainer>
             </Entity>
         )
     }
