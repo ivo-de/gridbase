@@ -88,6 +88,52 @@ export class Character {
         break;
     }
   }
+
+  getLOS(game, callBackCheck) {
+    const yPos = this.y;
+    console.log("Y", yPos);
+    const charsInLOS = [];
+    for (var column in game.grid) {
+      for (var row in game.grid[column]) {
+        if (callBackCheck(row, yPos)) {
+          console.log("not in line of sight. column:", column, "cell:", row);
+        } else {
+          if (game.grid[column][row] === null) {
+            console.log(
+              "in line of sight, empty. column:",
+              column,
+              "cell:",
+              row
+            );
+            console.log("trying to log the cell, ", game.grid[column][row]);
+          } else {
+            console.log(
+              "in line of sight, not empty. column:",
+              column,
+              "cell:",
+              row
+            );
+            charsInLOS.push(game.grid[column][row]);
+            break;
+          }
+        }
+      }
+    }
+    return charsInLOS;
+  }
+
+  checkForLOSBelow(row, yPos) {
+    return row <= yPos;
+  }
+
+  getLOSWithDirection(game, row, yPos) {
+    switch (this.direction) {
+      case "up":
+        console.log("ok");
+      default:
+        return this.getLOS(game, this.checkForLOSBelow(row, yPos));
+    }
+  }
 }
 
 export const generateCharacters = () => {
@@ -99,4 +145,3 @@ export const generateCharacters = () => {
   Marcus.direction = "up";
   return [John, Kevin, Marcus, Nick];
 };
-//testing
